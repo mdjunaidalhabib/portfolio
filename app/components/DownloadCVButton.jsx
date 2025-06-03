@@ -13,11 +13,12 @@ const DownloadCVButton = () => {
     }, 3000);
   };
 
-  const getLabel = () => {
-    if (status === 'downloading') return 'Download হচ্ছে...';
-    if (status === 'done') return 'Download হয়েছে';
-    return 'Download CV';
-  };
+const getLabel = () => {
+  if (status === 'downloading') return 'Downloading...';
+  if (status === 'done') return 'Download complete';
+  return 'Download CV';
+};
+
 
   return (
     <a
