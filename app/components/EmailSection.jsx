@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GithubIcon from "../../public/github-icon.svg";
 import LinkedinIcon from "../../public/linkedin-icon.svg";
 import Link from "next/link";
@@ -8,16 +8,34 @@ import Image from "next/image";
 const EmailSection = () => {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (emailSubmitted) {
+      const timer = setTimeout(() => {
+        setEmailSubmitted(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [emailSubmitted]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage("");
 
-    const data = {
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
+    const email = e.target.email.value;
+    const subject = e.target.subject.value;
+    const message = e.target.message.value;
+
+    // Simple validation
+    if (!email.includes("@")) {
+      setErrorMessage("Please enter a valid email address.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const data = { email, subject, message };
 
     try {
       const response = await fetch("/api/send", {
@@ -32,9 +50,14 @@ const EmailSection = () => {
 
       await response.json();
       setEmailSubmitted(true);
-      e.target.reset(); // Clear form
+
+      // Clear only the input fields, keep the form visible
+      e.target.email.value = "";
+      e.target.subject.value = "";
+      e.target.message.value = "";
     } catch (error) {
       console.error("Error sending message:", error);
+      setErrorMessage("Failed to send message. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -54,70 +77,78 @@ const EmailSection = () => {
             I&apos;m currently looking for new opportunities, my inbox is always open.
             Whether you have a question or just want to say hi, I&apos;ll try my best to get back to you!
           </p>
-          <div className="socials flex flex-row gap-2">
+          <div className="socials flex flex-row gap-4">
             <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
-              <Image src={GithubIcon} alt="Github Icon" />
+              <Image src={GithubIcon} alt="Github Icon" className="hover:scale-105 transition-transform duration-200" />
             </Link>
             <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-              <Image src={LinkedinIcon} alt="Linkedin Icon" />
+              <Image src={LinkedinIcon} alt="Linkedin Icon" className="hover:scale-105 transition-transform duration-200" />
             </Link>
           </div>
         </div>
 
         <div>
-          {emailSubmitted ? (
-            <div className="text-green-500 text-lg font-semibold">
-              ✅ Email sent successfully!
+          <form className="flex flex-col" onSubmit={handleSubmit}>
+            {emailSubmitted && (
+              <div className="text-green-500 text-lg font-semibold mb-4 animate-fade-in">
+                ✅ Email sent successfully!
+              </div>
+            )}
+            {errorMessage && (
+              <div className="text-red-500 text-sm mb-4">
+                {errorMessage}
+              </div>
+            )}
+
+            <div className="mb-6">
+              <label htmlFor="email" className="text-white block mb-2 text-sm font-medium" aria-label="Your email">
+                Your email
+              </label>
+              <input
+                name="email"
+                type="email"
+                id="email"
+                required
+                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+                placeholder="jacob@google.com"
+              />
             </div>
-          ) : (
-            <form className="flex flex-col" onSubmit={handleSubmit}>
-              <div className="mb-6">
-                <label htmlFor="email" className="text-white block mb-2 text-sm font-medium">
-                  Your email
-                </label>
-                <input
-                  name="email"
-                  type="email"
-                  id="email"
-                  required
-                  className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                  placeholder="jacob@google.com"
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="subject" className="text-white block text-sm mb-2 font-medium">
-                  Subject
-                </label>
-                <input
-                  name="subject"
-                  type="text"
-                  id="subject"
-                  required
-                  className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                  placeholder="Just saying hi"
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="message" className="text-white block text-sm mb-2 font-medium">
-                  Message
-                </label>
-                <textarea
-                  name="message"
-                  id="message"
-                  required
-                  className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                  placeholder="Let's talk about..."
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
-              >
-                {isSubmitting ? "Sending..." : "Send Message"}
-              </button>
-            </form>
-          )}
+            <div className="mb-6">
+              <label htmlFor="subject" className="text-white block text-sm mb-2 font-medium" aria-label="Subject">
+                Subject
+              </label>
+              <input
+                name="subject"
+                type="text"
+                id="subject"
+                required
+                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+                placeholder="Subject"
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="message" className="text-white block text-sm mb-2 font-medium" aria-label="Message">
+                Message
+              </label>
+              <textarea
+                name="message"
+                id="message"
+                required
+                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+                placeholder="Let's talk about..."
+              />
+            </div>
+            
+<div className="text-center">
+  <button
+    type="submit"
+    disabled={isSubmitting}
+    className="px-3 py-1 shadow-xl rounded-full bg-violet-700 hover:bg-fuchsia-600 text-white mt-3 inline-block"
+  >
+    {isSubmitting ? "Sending..." : "Send Message"}
+  </button>
+</div>
+          </form>
         </div>
       </section>
     </div>
