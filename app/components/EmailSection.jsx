@@ -138,16 +138,17 @@ const EmailSection = () => {
                 placeholder="Let's talk about..."
               />
             </div>
-            
-<div className="text-center">
-  <button
-    type="submit"
-    disabled={isSubmitting}
-    className="px-3 py-1 shadow-xl rounded-full bg-violet-700 hover:bg-fuchsia-600 text-white mt-3 inline-block"
-  >
-    {isSubmitting ? "Sending..." : "Send Message"}
-  </button>
-</div>
+            <div>
+
+           <button className="text-center"
+              type="submit"
+              disabled={isSubmitting}
+              className="px-0 lg:px-3 inline-block py-1 w-full shadow-xl lg:m-3 sm:w-fit rounded-full bg-violet-700 hover:bg-fuchsia-600 text-white mt-3 text-center"
+            >
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </button>
+             </div>
+
           </form>
         </div>
       </section>
