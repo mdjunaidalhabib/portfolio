@@ -4,6 +4,7 @@ import GithubIcon from "../../public/github-icon.svg";
 import LinkedinIcon from "../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
+import SocialIcons from "./SocialIcons";
 
 const EmailSection = () => {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
@@ -71,20 +72,16 @@ const EmailSection = () => {
       <section className="grid md:grid-cols-2 my-4 md:my-4 py-24 gap-4 relative">
         <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-900 to-transparent rounded-full h-80 w-80 z-0 blur-lg absolute top-3/4 -left-4 transform -translate-x-1/2 -translate-1/2"></div>
 
-        <div className="z-10">
-          <h5 className="text-xl font-bold text-white my-2">Let&apos;s Connect</h5>
-          <p className="text-[#ADB7BE] mb-4 max-w-md">
-            I&apos;m currently looking for new opportunities, my inbox is always open.
-            Whether you have a question or just want to say hi, I&apos;ll try my best to get back to you!
+        <div className="z-10 text-center">
+          <h5 className="text-xl font-bold text-white my-2">
+            Let&apos;s Connect
+          </h5>
+          <p className="text-[#ADB7BE] mb-4 max-w-md mx-auto">
+            I&apos;m currently looking for new opportunities, my inbox is always
+            open. Whether you have a question or just want to say hi, I&apos;ll
+            try my best to get back to you!
           </p>
-          <div className="socials flex flex-row gap-4">
-            <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
-              <Image src={GithubIcon} alt="Github Icon" className="hover:scale-105 transition-transform duration-200" />
-            </Link>
-            <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-              <Image src={LinkedinIcon} alt="Linkedin Icon" className="hover:scale-105 transition-transform duration-200" />
-            </Link>
-          </div>
+          <SocialIcons />
         </div>
 
         <div>
@@ -95,13 +92,15 @@ const EmailSection = () => {
               </div>
             )}
             {errorMessage && (
-              <div className="text-red-500 text-sm mb-4">
-                {errorMessage}
-              </div>
+              <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
             )}
 
             <div className="mb-6">
-              <label htmlFor="email" className="text-white block mb-2 text-sm font-medium" aria-label="Your email">
+              <label
+                htmlFor="email"
+                className="text-white block mb-2 text-sm font-medium"
+                aria-label="Your email"
+              >
                 Your email
               </label>
               <input
@@ -114,7 +113,11 @@ const EmailSection = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="subject" className="text-white block text-sm mb-2 font-medium" aria-label="Subject">
+              <label
+                htmlFor="subject"
+                className="text-white block text-sm mb-2 font-medium"
+                aria-label="Subject"
+              >
                 Subject
               </label>
               <input
@@ -127,7 +130,11 @@ const EmailSection = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="message" className="text-white block text-sm mb-2 font-medium" aria-label="Message">
+              <label
+                htmlFor="message"
+                className="text-white block text-sm mb-2 font-medium"
+                aria-label="Message"
+              >
                 Message
               </label>
               <textarea
@@ -139,16 +146,14 @@ const EmailSection = () => {
               />
             </div>
             <div>
-
-           <button className="text-center"
-              type="submit"
-              disabled={isSubmitting}
-              className="px-0 lg:px-3 inline-block py-1 w-full shadow-xl lg:m-3 sm:w-fit rounded-full bg-violet-700 hover:bg-fuchsia-600 text-white mt-3 text-center"
-            >
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </button>
-             </div>
-
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-0 lg:px-3 inline-block py-1 w-full shadow-xl lg:m-3 sm:w-fit rounded-full bg-violet-700 hover:bg-fuchsia-600 text-white mt-3 text-center"
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </button>
+            </div>
           </form>
         </div>
       </section>
