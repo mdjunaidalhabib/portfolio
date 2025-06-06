@@ -4,7 +4,6 @@ import {
   FaYoutube,
   FaWhatsapp,
   FaLinkedin,
-  FaGithub,
   FaPhone,
 } from "react-icons/fa";
 import Link from "next/link";
@@ -45,7 +44,7 @@ const socialLinks = [
 
 export default function SocialIcons() {
   return (
-    <div className="w-full flex justify-center gap-4 mt-6 flex-wrap ">
+    <div className="w-full flex justify-center gap-4 mt-6 py-3 flex-wrap ">
       {socialLinks.map((link) => (
         <Link
           key={link.href}
